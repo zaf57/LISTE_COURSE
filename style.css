@@ -1,0 +1,178 @@
+body {
+    background-image: url("trace de pneu.png");
+    background-repeat: no-repeat;
+    background-color: black;
+    color: orange;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+button {
+  background-color: orange;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 3px;
+  width: 90px;
+  padding-left: 0px;
+  padding-right: 0px;
+  background: linear-gradient(to bottom, orange, black);
+    
+}
+.hide {
+      display: none;
+    }
+.hide-label {
+      display: none;
+    }
+.button-container-all {
+    height: 40px;
+    display: flex; /* Utilisez le modèle de disposition flexbox */
+    /*justify-content: center;  Centre les boutons horizontalement */
+    /*align-items: center; /* Centre les boutons verticalement */
+    margin-top: 20px; /* Ajoute une marge en haut de 20 pixels */
+    margin-left: 39px;
+  }
+.nav-button {
+    height: 40px;/* Ajoutez une hauteur fixe aux boutons */
+    /* Vous pouvez ajuster la hauteur selon vos préférences */
+   max-height: 100%; 
+  }
+.message-banner {
+  background-color: green;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+.button:hover {
+  background-color: #ddd;
+}
+
+.button:active {
+  background-color: #bbb;
+}
+
+h1 {
+    color: orange;
+    font-size: 30px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+select {
+        color: orange;
+        font-size: 20px;
+        background-color: #262323;
+        border-radius: 4px;
+        height: 52px;
+        width: 280px;
+        text-align: center;
+          
+        }
+
+input[type="text"] {
+    width: 200px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: orange;
+    background-color: #262323;
+    font-size: 20px;
+}
+.jp-checkbox {
+    scale: 2; /* Augmente la taille de la case à cocher */
+    margin-top: 14px;
+    margin-right: 20px; /* Ajoute une marge à droite pour plus d'espace entre la case et son libellé */
+  }
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 5px #66afe9;
+}
+
+input[readonly] {
+    background-color: #262323;
+    margin-top: 6px;
+    width: 128px;
+}
+    .hide {
+      display: none;
+    }
+    .hide-label {
+      display: none;
+    }
+
+footer {
+    text-align: left;
+    background-color: #000;
+    color: orange;
+    padding: 20px;
+    font-size: 10px;
+}
+
+footer p {
+    margin: 10;
+}
+
+@media (max-width: 768px) {
+    /* Styles pour les appareils mobiles */
+    body {
+        background-size: cover;
+        padding: 10px;
+    }
+
+    .input-container {
+        width: 100%;
+    }
+
+    /* Autres styles spécifiques aux appareils mobiles */
+}
+#numeric-keyboard {
+    display: table-cell;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0px;
+}
+
+.numeric-row {
+    display: flex;
+    justify-content: center;
+}
+
+.numeric-button {
+    width: 71px;
+    height: 50px;
+    font-size: 18px;
+    background: linear-gradient(to bottom, orange, black);
+    color: black;
+}
+
+#clear-button {
+    background-color: orange; /* Couleur de la touche Effacer */
+    color: black;
+}
+
+input[type="number"],
+select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: orange;
+  background-color: #262323;
+  font-size: 20px;
+}
