@@ -59,11 +59,12 @@
 
     $('#submit-form').on('click', function(e) {
         e.preventDefault();
+        var formData = $form.serialize(); // Utilisation de serialize au lieu de serializeObject
         var jqxhr = $.ajax({
             url: url,
             method: "GET",
             dataType: "json",
-            data: $form.serializeObject()
+            data: formData
         }).done(function() {
             $('#photo-container').show();
         });
@@ -80,6 +81,7 @@
             .addTyping();
     });
 </script>
+
 
 
 </body>
