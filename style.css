@@ -2,13 +2,13 @@ body {
     background-image: url("trace de pneu.png");
     background-repeat: no-repeat;
     background-color: black;
-    color: red;
+    color: gold;
     font-family: Arial, sans-serif;
     margin: 20px;
 }
 
 button {
-  background-color: red;
+  background-color: gold;
   color: black;
   padding: 10px 20px;
   border: none;
@@ -22,7 +22,7 @@ button {
   width: 90px;
   padding-left: 0px;
   padding-right: 0px;
-  background: linear-gradient(to bottom, red, black);
+  background: linear-gradient(to bottom, gold, black);
     
 }
 .hide {
@@ -65,7 +65,7 @@ button {
 }
 
 h1 {
-    color: red;
+    color: gold;
     font-size: 30px;
 }
 
@@ -75,7 +75,7 @@ label {
     font-weight: bold;
 }
 select {
-        color: red;
+        color: gold;
         font-size: 20px;
         background-color: #262323;
         border-radius: 4px;
@@ -90,7 +90,7 @@ input[type="text"] {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: red;
+    color: gold;
     background-color: #262323;
     font-size: 20px;
 }
@@ -121,7 +121,7 @@ input[readonly] {
 footer {
     text-align: left;
     background-color: #000;
-    color: red;
+    color: gold;
     padding: 20px;
     font-size: 10px;
 }
@@ -158,12 +158,12 @@ footer p {
     width: 71px;
     height: 50px;
     font-size: 18px;
-    background: linear-gradient(to bottom, red, black);
+    background: linear-gradient(to bottom, gold, black);
     color: black;
 }
 
 #clear-button {
-    background-color: red; /* Couleur de la touche Effacer */
+    background-color: gold; /* Couleur de la touche Effacer */
     color: black;
 }
 
@@ -172,7 +172,7 @@ select {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  color: red;
+  color: gold;
   background-color: #262323;
   font-size: 20px;
 }
