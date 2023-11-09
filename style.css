@@ -4,7 +4,10 @@ body {
     background-color: black;
     color: black;
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0px;
+    background-size: cover;
+    background-position: top center; /* Décaler l'image d'arrière-plan vers la gauche */
+  
 }
 
 button {
