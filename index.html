@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,81 +10,108 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.28.8/js/jquery.keyboard.min.js"></script>
-  
-  <title>Bienvenue au MARIAGE UZ/KISACIK le 4 mai 2024 </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.28.8/js/jquery.keyboard.min.js"></script>
+    <title>Bienvenue au MARIAGE UZ/KISACIK le 4 mai 2024 </title>
+    <style>
+        .heart {
+            background-image: url('https://github.com/zaf57/TEST/blob/main/Coeur.png?raw=true'); /* Remplacez heart.png par votre propre image de coeur */
+            background-size: contain;
+            width: 50px;
+            height: 50px;
+            position: fixed;
+            top: -50px;
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="photo-container" style="display: none;">
-    <img src="https://github.com/zaf57/TEST/blob/main/black%20horse.jpg?raw=true" alt="Photo de la fête" style="width: 100%; height: 100vh; object-fit: cover;">
-</div>
+    <div id="photo-container" style="display: none;">
+        <img src="https://github.com/zaf57/TEST/blob/main/black%20horse.jpg?raw=true" alt="Photo de la fête" style="width: 100%; height: 100vh; object-fit: cover;">
+    </div>
 
-  <h1>Bienvenue au MARIAGE UZ/KISACIK du 4 mai 2024</h1>
-  <form id="test-form">
-
-    <label for="nom">Nom</label>
-    <input type="text" name="nom" id="nom" />
-
-    <br /><br />
-
-    <label for="prenom">Prénom</label>
-    <input type="text" name="prenom" id="prenom" />
-
-    <br /><br />
-
-    <label for="participation">Participerez-vous?</label>
-    <select name="participation" id="participation">
-      <option value="non">Non</option>
-      <option value="peut etre">Peut être</option>
-      <option value="oui">Oui</option>
-    </select>
-
-    <br /><br />
-
-    <label for="message">Message :</label>
-    <textarea name="message" id="message"></textarea>
+    <h1>Bienvenue au MARIAGE UZ/KISACIK du 4 mai 2024</h1>
+    <form id="test-form">
+        <label for="nom">Nom</label>
+        <input type="text" name="nom" id="nom" />
+        <br /><br />
+        <label for="prenom">Prénom</label>
+        <input type="text" name="prenom" id="prenom" />
+        <br /><br />
+        <label for="participation">Participerez-vous?</label>
+        <select name="participation" id="participation">
+            <option value="non">Non</option>
+            <option value="peut etre">Peut être</option>
+            <option value="oui">Oui</option>
+        </select>
+        <br /><br />
+        <label for="message">Message :</label>
+        <textarea name="message" id="message"></textarea>
+        <br /><br />
+        <button type="submit" id="submit-form" name="envoyer">Envoyer</button>
+    </form>
 
     <br /><br />
+    <input id="num" class="alignRight" type="text" required style="height: 40px; width: 280px;" />
 
-    <button type="submit" id="submit-form" name="envoyer">Envoyer</button>
-  </form>
+    <script type="text/javascript">
+        var $form = $('form#test-form'),
+            url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
 
-    <br /><br />
-      <input id="num" class="alignRight" type="text"required style="height: 40px;width: 280px;" />
-  
-</script>
-<script type="text/javascript">
-    var $form = $('form#test-form'),
-        url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
-
-    $('#submit-form').on('click', function(e) {
-        e.preventDefault();
-        var formData = $form.serialize(); // Utilisation de serialize au lieu de serializeObject
-        var jqxhr = $.ajax({
-            url: url,
-            method: "GET",
-            dataType: "json",
-            data: formData
-        }).done(function() {
-            $('#photo-container').show();
+        $('#submit-form').on('click', function(e) {
+            e.preventDefault();
+            var formData = $form.serialize(); // Utilisation de serialize au lieu de serializeObject
+            var jqxhr = $.ajax({
+                url: url,
+                method: "GET",
+                dataType: "json",
+                data: formData
+            }).done(function() {
+                $('#photo-container').show();
+                $('#nom').val('');
+                $('#prenom').val('');
+                $('#participation').val('');
+                $('#message').val('');
+            });
         });
-    });
 
-  
-  //fonction keyboard test
-    $(document).ready(function() {
-        $('#num')
-            .keyboard({
-                layout : 'num',
-                restrictInput : true,
-                preventPaste : true,
-                autoAccept : true
-            })
-            .addTyping();
-    });
-</script>
+        //fonction keyboard
+        $(document).ready(function() {
+            $('#num')
+                .keyboard({
+                    layout: 'num',
+                    restrictInput: true,
+                    preventPaste: true,
+                    autoAccept: true
+                })
+                .addTyping();
+        });
 
+        function createHeart() {
+            var heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
 
-
+        setInterval(createHeart, 300);
+    </script>
 </body>
 </html>
