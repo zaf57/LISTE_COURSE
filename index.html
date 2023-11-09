@@ -50,6 +50,9 @@
             var $form = $(this);
             var url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
             var formData = $form.serialize();
+            var currentDate = new Date().toLocaleString(); // Obtenir la date actuelle
+            formData += '&date=' + currentDate; // Ajouter la date au formulaire
+            
             $.ajax({
                 url: url,
                 method: "GET",
