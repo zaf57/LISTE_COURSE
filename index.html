@@ -2,41 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.28.8/js/jquery.keyboard.min.js"></script>
     <title>Bienvenue au MARIAGE UZ/KISACIK le 4 mai 2024 </title>
-    <style>
-        .heart {
-            background-image: url('https://github.com/zaf57/TEST/blob/main/Coeur.png?raw=true'); /* Remplacez heart.png par votre propre image de coeur */
-            background-size: contain;
-            width: 50px;
-            height: 50px;
-            position: fixed;
-            top: -50px;
-            animation: fall 5s linear infinite;
-        }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-        }
-    </style>
 </head>
 <body>
     <div id="photo-container" style="display: none;">
@@ -67,14 +34,16 @@
     <br /><br />
     <input id="num" class="alignRight" type="text" required style="height: 40px; width: 280px;" />
 
-    <script type="text/javascript">
-        var $form = $('form#test-form'),
-            url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
+    <div id="heart-container" style="display: none;"></div>
 
-        $('#submit-form').on('click', function(e) {
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $('#test-form').on('submit', function(e) {
             e.preventDefault();
-            var formData = $form.serialize(); // Utilisation de serialize au lieu de serializeObject
-            var jqxhr = $.ajax({
+            var $form = $(this);
+            var url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
+            var formData = $form.serialize();
+            $.ajax({
                 url: url,
                 method: "GET",
                 dataType: "json",
@@ -85,10 +54,10 @@
                 $('#prenom').val('');
                 $('#participation').val('');
                 $('#message').val('');
+                $('#heart-container').show();
             });
         });
 
-        //fonction keyboard
         $(document).ready(function() {
             $('#num')
                 .keyboard({
@@ -105,7 +74,7 @@
             heart.classList.add('heart');
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-            document.body.appendChild(heart);
+            document.getElementById('heart-container').appendChild(heart);
             setTimeout(() => {
                 heart.remove();
             }, 5000);
