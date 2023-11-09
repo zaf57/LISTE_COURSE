@@ -90,7 +90,7 @@ input[type="text"] {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: black;
+    color: #ebba91;
     background-color: #262323;
     font-size: 20px;
 }
@@ -172,10 +172,14 @@ select {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  color: black;
+  color: #ebba91;
   background-color: #262323;
   font-size: 20px;
 }
+       #message {
+            background-color: #262323;
+            color: #ebba91;
+        }
 
 
         .heart {
