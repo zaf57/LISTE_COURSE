@@ -4,7 +4,7 @@ body {
     background-color: black;
     color: black;
     font-family: Arial, sans-serif;
-    margin: 0px;
+    margin: 50px;
     background-size: cover;
     background-position: top center; /* Décaler l'image d'arrière-plan vers la gauche */
   
@@ -137,7 +137,10 @@ footer p {
     /* Styles pour les appareils mobiles */
     body {
         background-size: cover;
-        padding: 10px;
+        padding: 0px;
+        margin:10px;
+        background-size: 160% auto;
+        background-position: top center; /* Décaler l'image d'arrière-plan vers la gauche */
     }
 
     .input-container {
