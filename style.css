@@ -9,7 +9,7 @@ body {
 
 button {
   background-color: #262323;
-  color: #ebba91;
+  color: #262323;
   padding: 10px 20px;
   border: none;
   text-align: center;
@@ -22,7 +22,7 @@ button {
   width: 90px;
   padding-left: 0px;
   padding-right: 0px;
-  background: linear-gradient(to bottom, #ebba91, #262323);
+  background: linear-gradient(to left, #ebba91, #262323);
     
 }
 .hide {
