@@ -91,7 +91,7 @@ select {
 input[type="text"] {
     width: 140px;
     padding: 5px;
-    border: 1px solid #1d1b1d;
+    border: 1px solid #ba6239;
     border-radius: 20px;
     color: #1d1b1d;
     background-color: transparent;
@@ -177,12 +177,12 @@ footer p {
 input[type="number"],
 select {
   padding: 5px;
-  border: 1px solid #1d1b1d;
+  border: 1px solid #ba6239;
   border-radius: 20px;
   color: #1d1b1d;
   background-color: transparent;
   font-size: 18px;
-  font-style: oblique;
+  font-style: normal;
 }
        #message {
             background-color: transparent;
@@ -190,7 +190,7 @@ select {
             width: 200px;
             height: 70px;
             border-radius: 20px;
-            border: 1px solid #1d1b1d;
+            border: 1px solid #ba6239;
             font-size: 17px;
             font-style: oblique;
         }
