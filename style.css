@@ -80,7 +80,7 @@ label {
 select {
         color: #1d1b1d;
         font-size: 20px;
-        background-color: #f4c59b;
+        background-color: transparent;
         border-radius: 20px;
         height: 38px;
         width: 170px;
@@ -94,7 +94,7 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 20px;
     color: #1d1b1d;
-    background-color: #f4c59b;
+    background-color: transparent;
     font-size: 20px;
 }
 .jp-checkbox {
@@ -183,11 +183,12 @@ select {
   font-size: 20px;
 }
        #message {
-            background-color: #f4c59b;
+            background-color: transparent;
             color: #1d1b1d;
             width: 180px;
             height: 50px;
             border-radius: 20px;
+            border: 1px solid #ccc;
         }
 
 
