@@ -1,8 +1,8 @@
 body {
     background-image: url("get married.png");
     background-repeat: no-repeat;
-    background-color: black;
-    color: black;
+    background-color: #1d1b1d;
+    color: #1d1b1d;
     font-family: Arial, sans-serif;
     margin: 50px;
     background-size: cover;
@@ -11,8 +11,8 @@ body {
 }
 
 button {
-  background-color: #262323;
-  color: #262323;
+  background-color: #f4c59b;
+  color: #f4c59b;
   padding: 10px 20px;
   border: none;
   text-align: center;
@@ -25,7 +25,7 @@ button {
   width: 90px;
   padding-left: 0px;
   padding-right: 0px;
-  background: linear-gradient(to left, #ebba91, #262323);
+  background: linear-gradient(to left, #1d1b1d, #f4c59b);
     
 }
 .hide {
@@ -68,7 +68,7 @@ button {
 }
 
 h1 {
-    color: black;
+    color: #1d1b1d;
     font-size: 30px;
 }
 
@@ -78,23 +78,23 @@ label {
     font-weight: bold;
 }
 select {
-        color: black;
+        color: #1d1b1d;
         font-size: 20px;
-        background-color: #262323;
-        border-radius: 4px;
+        background-color: #f4c59b;
+        border-radius: 20px;
         height: 38px;
-        width: 212px;
+        width: 170px;
         text-align: center;
           
         }
 
 input[type="text"] {
-    width: 200px;
+    width: 150px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    color: #ebba91;
-    background-color: #262323;
+    color: #1d1b1d;
+    background-color: #f4c59b;
     font-size: 20px;
 }
 .jp-checkbox {
@@ -110,7 +110,7 @@ input[type="text"]:focus {
 }
 
 input[readonly] {
-    background-color: #262323;
+    background-color: #f4c59b;
     margin-top: 6px;
     width: 128px;
 }
@@ -124,7 +124,7 @@ input[readonly] {
 footer {
     text-align: left;
     background-color: #000;
-    color: black;
+    color: #1d1b1d;
     padding: 20px;
     font-size: 10px;
 }
@@ -164,28 +164,30 @@ footer p {
     width: 71px;
     height: 50px;
     font-size: 18px;
-    background: linear-gradient(to bottom, black, black);
-    color: black;
+    background: linear-gradient(to bottom, #1d1b1d, #1d1b1d);
+    color: #1d1b1d;
 }
 
 #clear-button {
-    background-color: black; /* Couleur de la touche Effacer */
-    color: black;
+    background-color: #1d1b1d; /* Couleur de la touche Effacer */
+    color: #1d1b1d;
 }
 
 input[type="number"],
 select {
   padding: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  color: #ebba91;
-  background-color: #262323;
+  border-radius: 20px;
+  color: #1d1b1d;
+  background-color: #f4c59b;
   font-size: 20px;
 }
        #message {
-            background-color: #262323;
-            color: #ebba91;
-            width: 204.017px;
+            background-color: #f4c59b;
+            color: #1d1b1d;
+            width: 180px;
+            height: 50px;
+            border-radius: 20px;
         }
 
 
