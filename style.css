@@ -83,7 +83,7 @@ select {
         background-color: transparent;
         border-radius: 20px;
         height: 38px;
-        width: 170px;
+        width: 100px;
         text-align: center;
           
         }
@@ -96,6 +96,7 @@ input[type="text"] {
     color: #1d1b1d;
     background-color: transparent;
     font-size: 20px;
+    font-style: oblique;
 }
 .jp-checkbox {
     scale: 2; /* Augmente la taille de la case à cocher */
@@ -180,15 +181,18 @@ select {
   border-radius: 20px;
   color: #1d1b1d;
   background-color: transparent;
-  font-size: 20px;
+  font-size: 18px;
+  font-style: oblique;
 }
        #message {
             background-color: transparent;
             color: #1d1b1d;
-            width: 180px;
-            height: 50px;
+            width: 200px;
+            height: 70px;
             border-radius: 20px;
             border: 1px solid #1d1b1d;
+            font-size: 17px;
+            font-style: oblique;
         }
 
 
