@@ -4,47 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suivi Journalier sur 24H</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Ajouter les SDK Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="style.css"> <!-- Assurez-vous d'avoir un fichier style.css si nécessaire -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
-    <script>
         // Configuration de Firebase
         const firebaseConfig = {
-  apiKey: "AIzaSyBn3Oe2D4OD6UODfV8EAA2lXyzr9P4BeVQ",
-  authDomain: "suivi-repas.firebaseapp.com",
-databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
-  projectId: "suivi-repas",
-  storageBucket: "suivi-repas.firebasestorage.app",
-  messagingSenderId: "240395658725",
-  appId: "1:240395658725:web:1ee965fb0894a00f7f3b0c",
-  measurementId: "G-M9MQ90YR95"
-};
+            apiKey: "AIzaSyBn3Oe2D4OD6UODfV8EAA2lXyzr9P4BeVQ",
+            authDomain: "suivi-repas.firebaseapp.com",
+            databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
+            projectId: "suivi-repas",
+            storageBucket: "suivi-repas.appspot.com",
+            messagingSenderId: "240395658725",
+            appId: "1:240395658725:web:1ee965fb0894a00f7f3b0c",
+            measurementId: "G-M9MQ90YR95"
+        };
 
-        
         // Initialiser Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-        // Fonction pour soumettre les données
-        function submitData(hour) {
+        // Définir les fonctions dans le contexte global
+        window.submitData = function(hour) {
             const sein = document.querySelector(`#${hour}_sein`).checked;
             const biberon = document.querySelector(`#${hour}_biberon`).checked;
             const observation = document.querySelector(`#observation_${hour}`).value;
 
-            database.ref(hour).set({
+            set(ref(database, hour), {
                 sein: sein,
                 biberon: biberon,
                 observation: observation
             });
         }
 
-        // Fonction pour récupérer les données
-        function fetchData() {
+        window.fetchData = function() {
             const hours = ["00h", "01h", "02h", "03h", "04h", "05h", "06h", "07h", "08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"];
             hours.forEach(hour => {
-                database.ref(hour).on('value', (snapshot) => {
+                const hourRef = ref(database, hour);
+                onValue(hourRef, (snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         document.querySelector(`#${hour}_sein`).checked = data.sein;
@@ -56,7 +54,7 @@ databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
         }
 
         // Charger les données au démarrage
-        window.onload = () => {
+        window.onload = function() {
             fetchData();
         };
     </script>
@@ -76,102 +74,26 @@ databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
             <textarea class="observation" placeholder="Observations" id="observation_00h" onchange="submitData('00h')"></textarea>
         </div>
 
-        <!-- Répétez pour les autres heures jusqu'à 23:00 -->
-        
         <div class="container">
-            <div class="time">23:00</div>
+            <div class="time">01:00</div>
             <div class="checkbox-group">
-                <input type="checkbox" id="23h_sein" name="23h_sein" onchange="submitData('23h')"> Sein
-                <input type="checkbox" id="23h_biberon" name="23h_biberon" onchange="submitData('23h')"> Biberon
+                <input type="checkbox" id="01h_sein" name="01h_sein" onchange="submitData('01h')"> Sein
+                <input type="checkbox" id="01h_biberon" name="01h_biberon" onchange="submitData('01h')"> Biberon
             </div>
-            <textarea class="observation" placeholder="Observations" id="observation_23h" onchange="submitData('23h')"></textarea>
+            <textarea class="observation" placeholder="Observations" id="observation_01h" onchange="submitData('01h')"></textarea>
         </div>
 
-        <button type="submit">Soumettre</button>
-    </form>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi Journalier sur 24H</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Ajouter les SDK Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
-    <script>
-        // Configuration de Firebase
-        const firebaseConfig = {
-  apiKey: "AIzaSyBn3Oe2D4OD6UODfV8EAA2lXyzr9P4BeVQ",
-  authDomain: "suivi-repas.firebaseapp.com",
-databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
-  projectId: "suivi-repas",
-  storageBucket: "suivi-repas.firebasestorage.app",
-  messagingSenderId: "240395658725",
-  appId: "1:240395658725:web:1ee965fb0894a00f7f3b0c",
-  measurementId: "G-M9MQ90YR95"
-};
-
-        
-        // Initialiser Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Fonction pour soumettre les données
-        function submitData(hour) {
-            const sein = document.querySelector(`#${hour}_sein`).checked;
-            const biberon = document.querySelector(`#${hour}_biberon`).checked;
-            const observation = document.querySelector(`#observation_${hour}`).value;
-
-            database.ref(hour).set({
-                sein: sein,
-                biberon: biberon,
-                observation: observation
-            });
-        }
-
-        // Fonction pour récupérer les données
-        function fetchData() {
-            const hours = ["00h", "01h", "02h", "03h", "04h", "05h", "06h", "07h", "08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"];
-            hours.forEach(hour => {
-                database.ref(hour).on('value', (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        document.querySelector(`#${hour}_sein`).checked = data.sein;
-                        document.querySelector(`#${hour}_biberon`).checked = data.biberon;
-                        document.querySelector(`#observation_${hour}`).value = data.observation;
-                    }
-                });
-            });
-        }
-
-        // Charger les données au démarrage
-        window.onload = () => {
-            fetchData();
-        };
-    </script>
-</head>
-<body>
-
-    <h1>Suivi des Repas sur 24H</h1>
-
-    <form>
-        <!-- Créer une case pour chaque heure de la journée -->
         <div class="container">
-            <div class="time">00:00</div>
+            <div class="time">02:00</div>
             <div class="checkbox-group">
-                <input type="checkbox" id="00h_sein" name="00h_sein" onchange="submitData('00h')"> Sein
-                <input type="checkbox" id="00h_biberon" name="00h_biberon" onchange="submitData('00h')"> Biberon
+                <input type="checkbox" id="02h_sein" name="02h_sein" onchange="submitData('02h')"> Sein
+                <input type="checkbox" id="02h_biberon" name="02h_biberon" onchange="submitData('02h')"> Biberon
             </div>
-            <textarea class="observation" placeholder="Observations" id="observation_00h" onchange="submitData('00h')"></textarea>
+            <textarea class="observation" placeholder="Observations" id="observation_02h" onchange="submitData('02h')"></textarea>
         </div>
 
-        <!-- Répétez pour les autres heures jusqu'à 23:00 -->
-        
+        <!-- Ajoutez d'autres heures ici de la même manière -->
+
         <div class="container">
             <div class="time">23:00</div>
             <div class="checkbox-group">
