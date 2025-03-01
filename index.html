@@ -2,125 +2,307 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/virtual-keyboard/1.28.8/js/jquery.keyboard.min.js"></script>
-   
-    <title>Bienvenue au MARIAGE de ZAFER et RUKIYE le 4 mai 2024 </title>
+    <title>Suivi Journalier sur 24H</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #e9f5fb;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 15px;
+            background-color: #ffffff;
+            border: 1px solid #d1d1d1;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        .container:hover {
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .time {
+            flex: 1;
+            font-weight: bold;
+            font-size: 18px;
+            color: #007bff;
+        }
+        .checkbox-group {
+            flex: 2;
+            display: flex;
+            align-items: center;
+        }
+        .observation {
+            flex: 3;
+            margin-left: 10px;
+            border-radius: 5px;
+            border: 1px solid #d1d1d1;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 5px;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+            resize: none;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        textarea.placeholder {
+            color: #aaa;
+        }
+        button {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div id="photo-container" style="display: none;">
-        <img src="https://github.com/zaf57/TEST/blob/main/black%20horse.jpg?raw=true" alt="Photo de la fête" style="width: 100%; height: 100vh; object-fit: cover;">
-    </div>
-    <div id="sending-banner" style="display: none; position: fixed; top: 0; width: 100%; background-color: #ebba91; text-align: center; padding: 10px;">
-        Envoi en cours...
-    </div>
 
-    <h1>Bienvenue au MARIAGE ! </h1>
-    <h2> Rukiye UZ & Zafer KISACIK</h2>
-    <h2> le 4 mai 2024</h2>
-    
-    <form id="test-form">
-        <label for="nom">Nom:</label>
-        <input type="text" name="nom" id="nom" />
-        <br /><br />
-        <label for="prenom">Prénom:</label>
-        <input type="text" name="prenom" id="prenom" />
-        <br /><br />
-        <label for="participation">Participerez-vous?</label>
-        <select name="participation" id="participation">
-            <option value="oui">Oui</option>
-            <option value="non">Non</option>
-            <option value="peut etre">Peut être</option>
-        </select>
-                      
-        <select name="personne" id="personne">
-            <option value="0">?</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-        </select>
-        <br /><br />
-        <label for="message">Message :</label>
-        <textarea name="message" id="message"></textarea>
-        <br /><br />
-        <button type="submit" id="submit-form" name="envoyer">Envoyer</button>
+    <h1>Suivi des Repas sur 24H</h1>
+
+    <form>
+
+        <!-- Créer une case pour chaque heure de la journée -->
+        <div class="container">
+            <div class="time">00:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="00h_sein" name="00h_sein"> Sein
+                <input type="checkbox" id="00h_biberon" name="00h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_00h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">01:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="01h_sein" name="01h_sein"> Sein
+                <input type="checkbox" id="01h_biberon" name="01h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_01h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">02:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="02h_sein" name="02h_sein"> Sein
+                <input type="checkbox" id="02h_biberon" name="02h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_02h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">03:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="03h_sein" name="03h_sein"> Sein
+                <input type="checkbox" id="03h_biberon" name="03h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_03h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">04:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="04h_sein" name="04h_sein"> Sein
+                <input type="checkbox" id="04h_biberon" name="04h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_04h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">05:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="05h_sein" name="05h_sein"> Sein
+                <input type="checkbox" id="05h_biberon" name="05h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_05h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">06:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="06h_sein" name="06h_sein"> Sein
+                <input type="checkbox" id="06h_biberon" name="06h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_06h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">07:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="07h_sein" name="07h_sein"> Sein
+                <input type="checkbox" id="07h_biberon" name="07h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_07h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">08:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="08h_sein" name="08h_sein"> Sein
+                <input type="checkbox" id="08h_biberon" name="08h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_08h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">09:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="09h_sein" name="09h_sein"> Sein
+                <input type="checkbox" id="09h_biberon" name="09h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_09h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">10:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="10h_sein" name="10h_sein"> Sein
+                <input type="checkbox" id="10h_biberon" name="10h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_10h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">11:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="11h_sein" name="11h_sein"> Sein
+                <input type="checkbox" id="11h_biberon" name="11h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_11h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">12:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="12h_sein" name="12h_sein"> Sein
+                <input type="checkbox" id="12h_biberon" name="12h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_12h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">13:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="13h_sein" name="13h_sein"> Sein
+                <input type="checkbox" id="13h_biberon" name="13h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_13h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">14:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="14h_sein" name="14h_sein"> Sein
+                <input type="checkbox" id="14h_biberon" name="14h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_14h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">15:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="15h_sein" name="15h_sein"> Sein
+                <input type="checkbox" id="15h_biberon" name="15h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_15h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">16:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="16h_sein" name="16h_sein"> Sein
+                <input type="checkbox" id="16h_biberon" name="16h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_16h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">17:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="17h_sein" name="17h_sein"> Sein
+                <input type="checkbox" id="17h_biberon" name="17h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_17h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">18:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="18h_sein" name="18h_sein"> Sein
+                <input type="checkbox" id="18h_biberon" name="18h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_18h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">19:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="19h_sein" name="19h_sein"> Sein
+                <input type="checkbox" id="19h_biberon" name="19h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_19h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">20:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="20h_sein" name="20h_sein"> Sein
+                <input type="checkbox" id="20h_biberon" name="20h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_20h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">21:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="21h_sein" name="21h_sein"> Sein
+                <input type="checkbox" id="21h_biberon" name="21h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_21h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">22:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="22h_sein" name="22h_sein"> Sein
+                <input type="checkbox" id="22h_biberon" name="22h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_22h"></textarea>
+        </div>
+
+        <div class="container">
+            <div class="time">23:00</div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="23h_sein" name="23h_sein"> Sein
+                <input type="checkbox" id="23h_biberon" name="23h_biberon"> Biberon
+            </div>
+            <textarea class="observation" placeholder="Observations" id="observation_23h"></textarea>
+        </div>
+
+        <button type="submit">Soumettre</button>
     </form>
 
-    <br /><br />
-    <input id="num" class="alignRight" type="text" required style="height: 40px; width: 280px;" />
-
-    <div id="heart-container" style="display: none;"></div>
-
-    <script>
-        $('#test-form').on('submit', function(e) {
-            e.preventDefault();
-            $('#sending-banner').show(); // Afficher la bannière d'envoi en cours
-            var $form = $(this);
-            var url = 'https://script.google.com/macros/s/AKfycbzcQ97KVElxEaHT2Cl_cPff8ndY-3t3m4HYgb_a_IaheA_Lf0iwZMiAZ9dTLIoqt-fJ/exec';
-            var formData = $form.serialize();
-            var currentDate = new Date().toLocaleString(); // Obtenir la date actuelle
-            formData += '&date=' + currentDate; // Ajouter la date au formulaire
-            
-            $.ajax({
-                url: url,
-                method: "GET",
-                dataType: "json",
-                data: formData
-            }).done(function() {
-                $('#photo-container').show();
-                $('#nom').val('');
-                $('#prenom').val('');
-                $('#participation').val('');
-                $('#message').val('');
-                $('#heart-container').show();
-                $('#sending-banner').hide(); // Cacher la bannière une fois l'envoi terminé
-                
-            });
-        });
-
-        $('#num').hide(); //cacher la fonction keyboards
-        $(document).ready(function() {
-            $('#num')
-                .keyboard({
-                    layout: 'num',
-                    restrictInput: true,
-                    preventPaste: true,
-                    autoAccept: true
-                })
-                .addTyping();
-        });
-
-        function createHeart() {
-            var heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
-            document.getElementById('heart-container').appendChild(heart);
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
-        }
-
-        setInterval(createHeart, 300);
-
-        //fonction vibrer
-        $(document).ready(function() {
-        $('#submit-form').addClass('vibrate-button');
-    });
-    </script>
 </body>
 </html>
