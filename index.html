@@ -1,110 +1,88 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi Journalier sur 24H</title>
-    <link rel="stylesheet" href="style.css"> <!-- Assurez-vous d'avoir un fichier style.css si nécessaire -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-
-        // Configuration de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyBn3Oe2D4OD6UODfV8EAA2lXyzr9P4BeVQ",
-            authDomain: "suivi-repas.firebaseapp.com",
-            databaseURL: "https://suivi-repas-default-rtdb.firebaseio.com",
-            projectId: "suivi-repas",
-            storageBucket: "suivi-repas.appspot.com",
-            messagingSenderId: "240395658725",
-            appId: "1:240395658725:web:1ee965fb0894a00f7f3b0c",
-            measurementId: "G-M9MQ90YR95"
-        };
-
-        // Initialiser Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Définir les fonctions dans le contexte global
-        window.submitData = function(hour) {
-            const sein = document.querySelector(`#${hour}_sein`).checked;
-            const biberon = document.querySelector(`#${hour}_biberon`).checked;
-            const observation = document.querySelector(`#observation_${hour}`).value;
-
-            set(ref(database, hour), {
-                sein: sein,
-                biberon: biberon,
-                observation: observation
-            });
-        }
-
-        window.fetchData = function() {
-            const hours = ["00h", "01h", "02h", "03h", "04h", "05h", "06h", "07h", "08h", "09h", "10h", "11h", "12h", "13h", "14h", "15h", "16h", "17h", "18h", "19h", "20h", "21h", "22h", "23h"];
-            hours.forEach(hour => {
-                const hourRef = ref(database, hour);
-                onValue(hourRef, (snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        document.querySelector(`#${hour}_sein`).checked = data.sein;
-                        document.querySelector(`#${hour}_biberon`).checked = data.biberon;
-                        document.querySelector(`#observation_${hour}`).value = data.observation;
-                    }
-                });
-            });
-        }
-
-        // Charger les données au démarrage
-        window.onload = function() {
-            fetchData();
-        };
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Liste de courses 🇫🇷🇹🇷</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex; 
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 8px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #result {
+      margin-top: 15px;
+      color: green;
+    }
+  </style>
 </head>
 <body>
+  <h2>🛒 Liste de courses 🇫🇷 → 🇹🇷</h2>
 
-    <h1>Suivi des Repas sur 24H</h1>
+  <form id="formCourses">
+    <input type="text" name="fr" placeholder="Produit en français" required><br>
+    <input type="text" name="tr" placeholder="Équivalent turc (facultatif)"><br>
+    <button type="submit">Ajouter</button>
+  </form>
 
-    <form>
-        <!-- Créer une case pour chaque heure de la journée -->
-        <div class="container">
-            <div class="time">00:00</div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="00h_sein" name="00h_sein" onchange="submitData('00h')"> Sein
-                <input type="checkbox" id="00h_biberon" name="00h_biberon" onchange="submitData('00h')"> Biberon
-            </div>
-            <textarea class="observation" placeholder="Observations" id="observation_00h" onchange="submitData('00h')"></textarea>
-        </div>
+  <p id="result"></p>
 
-        <div class="container">
-            <div class="time">01:00</div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="01h_sein" name="01h_sein" onchange="submitData('01h')"> Sein
-                <input type="checkbox" id="01h_biberon" name="01h_biberon" onchange="submitData('01h')"> Biberon
-            </div>
-            <textarea class="observation" placeholder="Observations" id="observation_01h" onchange="submitData('01h')"></textarea>
-        </div>
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzMFi4cUrmtlFB8hDv6WzyaTlh64UZN6ATAb0ofPXO4K_sTpDTQCmLUigSE8G4Yh9JX/exec"; // <-- Mets ton URL Apps Script ici
 
-        <div class="container">
-            <div class="time">02:00</div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="02h_sein" name="02h_sein" onchange="submitData('02h')"> Sein
-                <input type="checkbox" id="02h_biberon" name="02h_biberon" onchange="submitData('02h')"> Biberon
-            </div>
-            <textarea class="observation" placeholder="Observations" id="observation_02h" onchange="submitData('02h')"></textarea>
-        </div>
+    document.getElementById("formCourses").addEventListener("submit", e => {
+      e.preventDefault();
 
-        <!-- Ajoutez d'autres heures ici de la même manière -->
+      const form = e.target;
+      const data = {
+        fr: form.fr.value,
+        tr: form.tr.value
+      };
 
-        <div class="container">
-            <div class="time">23:00</div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="23h_sein" name="23h_sein" onchange="submitData('23h')"> Sein
-                <input type="checkbox" id="23h_biberon" name="23h_biberon" onchange="submitData('23h')"> Biberon
-            </div>
-            <textarea class="observation" placeholder="Observations" id="observation_23h" onchange="submitData('23h')"></textarea>
-        </div>
-
-        <button type="submit">Soumettre</button>
-    </form>
-
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => {
+        document.getElementById("result").textContent = "✅ Ajouté à la liste !";
+        form.reset();
+      })
+      .catch(err => {
+        document.getElementById("result").textContent = "❌ Erreur : " + err;
+      });
+    });
+  </script>
 </body>
 </html>
