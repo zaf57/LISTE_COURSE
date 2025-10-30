@@ -14,26 +14,26 @@
       <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
       <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2">📢 Lire la liste</button>
 
-      <p id="status" class="text-sm text-gray-600 mb-3 text-center">Appuie et dis : "Ajoute pain au magasin 1" ou "Ajoute œufs au magasin 2"</p>
+      <p id="status" class="text-sm text-gray-600 mb-3 text-center">Appuie et dis : "Ajoute pain à Carrefour" ou "Ajoute œufs à Prodor"</p>
       <div id="result" class="text-green-600 mb-3 text-center"></div>
     </div>
 
     <!-- Deux listes côte à côte -->
     <div class="flex flex-row gap-4 overflow-x-auto">
       <div class="flex-1 min-w-[45%] bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold text-blue-600 mb-2 text-center">📋 Magasin 1</h2>
+        <h2 class="font-semibold text-blue-600 mb-2 text-center">📋 CARREFOUR</h2>
         <div id="items1" class="space-y-2"></div>
       </div>
 
       <div class="flex-1 min-w-[45%] bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold text-orange-600 mb-2 text-center">📋 Magasin 2</h2>
+        <h2 class="font-semibold text-orange-600 mb-2 text-center">📋 PRODOR</h2>
         <div id="items2" class="space-y-2"></div>
       </div>
     </div>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxOMfQMvTBownkQPMGqkbefHxue5PXESJ-jSVgyMgZuzGBVnHl4x0Cuxc6q7uzrPltK/exec";
 
     const voiceBtn = document.getElementById("voiceBtn");
     const status = document.getElementById("status");
@@ -41,7 +41,7 @@
     const items1 = document.getElementById("items1");
     const items2 = document.getElementById("items2");
 
-    // 🔊 Fonction de lecture vocale
+    // 🔊 Lecture vocale
     function speak(text) {
       if (!("speechSynthesis" in window)) return;
       const utter = new SpeechSynthesisUtterance(text);
@@ -99,7 +99,7 @@
       loadList();
     }
 
-    // 🔊 Lire la liste complète
+    // 🔊 Lecture de la liste complète
     async function readListAloud() {
       const res = await fetch(scriptURL);
       const data = await res.json();
@@ -108,8 +108,8 @@
         return;
       }
 
-      let phrase1 = "Magasin 1 : ";
-      let phrase2 = "Magasin 2 : ";
+      let phrase1 = "Chez Carrefour : ";
+      let phrase2 = "Chez Prodor : ";
       data.forEach(row => {
         if (row.magasin1) phrase1 += `${row.magasin1}, `;
         if (row.magasin2) phrase2 += `${row.magasin2}, `;
