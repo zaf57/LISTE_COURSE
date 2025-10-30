@@ -13,7 +13,6 @@
     <div class="bg-white p-4 rounded-lg shadow">
       <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
       <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2">📢 Lire la liste</button>
-      <button id="deleteLast" class="bg-red-500 text-white py-2 rounded w-full mt-2">🗑️ Supprimer le dernier produit</button>
 
       <p id="status" class="text-sm text-gray-600 mb-3">Appuie et dis : "Ajoute pain et œufs au magasin 2"</p>
       <div id="result" class="text-green-600 mb-3"></div>
@@ -118,21 +117,6 @@ async function loadList() {
       }
     }
 
-    // supprimer le dernier produit
-    async function deleteLast() {
-      const resp = await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete_last" })
-      });
-      const json = await resp.json();
-      if (json.ok) {
-        speak("Dernier produit supprimé");
-        loadList();
-      } else {
-        speak("Rien à supprimer");
-      }
-    }
-
     // ajout vocal via IA
     voiceBtn.addEventListener("click", () => {
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
@@ -187,3 +171,4 @@ async function loadList() {
   </script>
 </body>
 </html>
+
