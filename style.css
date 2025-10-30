@@ -1,8 +1,20 @@
-    body {
+
+body {
       background: linear-gradient(135deg, rgb(59 130 246 / 0.5) 0%, #fff7f3 100%); 
       font-family: "Inter", sans-serif;
     }
-
+    /* 🖼️ Fond ZAFSHOP */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url("ZAFSHOP.png") center/cover no-repeat;
+      filter: blur(6px) brightness(0.7);
+      z-index: -1;
+    }
     .container {
       max-width: 1100px;
     }
@@ -69,6 +81,7 @@
     .shops::-webkit-scrollbar {
       display: none;
     }
+
 
 
 
