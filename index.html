@@ -12,6 +12,8 @@
 
     <div class="bg-white p-4 rounded-lg shadow">
       <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
+      <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2">📢 Lire la liste</button>
+
       <p id="status" class="text-sm text-gray-600 mb-3">Appuie et dis : "Ajoute pain et œufs au magasin 2"</p>
       <div id="result" class="text-green-600 mb-3"></div>
 
@@ -23,6 +25,8 @@
   </div>
 
   <script>
+    document.getElementById("readList").addEventListener("click", readListAloud);
+
     const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
 
     const voiceBtn = document.getElementById("voiceBtn");
@@ -30,6 +34,17 @@
     const result = document.getElementById("result");
     const itemsDiv = document.getElementById("items");
 
+  function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "fr-FR";
+  utter.rate = 1;      // vitesse
+  utter.pitch = 1;     // hauteur
+  utter.volume = 1;    // volume
+  window.speechSynthesis.speak(utter);
+}
+
+    
     async function loadList() {
       try {
         const res = await fetch(scriptURL);
@@ -51,6 +66,24 @@
         itemsDiv.innerHTML = "<div class='text-red-500'>Erreur chargement liste</div>";
       }
     }
+    
+    async function readListAloud() {
+  const res = await fetch(scriptURL);
+  const data = await res.json();
+  if (!data || data.length === 0) {
+    speak("La liste est vide !");
+    return;
+  }
+
+  let phrase = "Voici votre liste de courses : ";
+  data.forEach(row => {
+    if (row.magasin1) phrase += `${row.magasin1} au magasin 1, `;
+    if (row.magasin2) phrase += `${row.magasin2} au magasin 2, `;
+  });
+
+  speak(phrase);
+}
+
 
     // Utilisation de la reconnaissance vocale
     voiceBtn.addEventListener("click", () => {
