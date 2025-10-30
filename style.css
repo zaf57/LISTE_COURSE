@@ -28,6 +28,10 @@
     .prodor {
       border-top: 5px solid #ea580c;
     }
+    
+    .gap-4 {
+    gap: 2rem;
+     }
 
     .item {
       display: flex;
@@ -59,4 +63,5 @@
         margin-bottom: 1rem;
       }
     }
+
 
