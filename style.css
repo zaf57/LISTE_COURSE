@@ -30,7 +30,7 @@ body {
 
 .bg-purple-600 {
     --tw-bg-opacity: 1;
-    background-color: rgb(120 150 215);
+    background-color: rgb(234 88 12);
 }
 
     .shop-card:hover {
@@ -92,6 +92,7 @@ body {
     --tw-text-opacity: 1;
     color: rgb(255 255 255);
 }
+
 
 
 
