@@ -1,105 +1,117 @@
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🛒 Liste de courses 🇫🇷🇹🇷</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Liste de courses - IA vocale</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center py-10">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-4">🛒 Liste de courses — IA vocale</h1>
 
-  <h1 class="text-2xl font-bold mb-6">🛒 Liste de courses 🇫🇷 → 🇹🇷</h1>
+    <div class="bg-white p-4 rounded-lg shadow">
+      <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
+      <p id="status" class="text-sm text-gray-600 mb-3">Appuie et dis : "Ajoute pain et œufs au magasin 2"</p>
+      <div id="result" class="text-green-600 mb-3"></div>
 
-  <form id="formCourses" class="bg-white p-6 rounded-xl shadow-md w-80 flex flex-col space-y-3">
-    <input type="text" name="fr" placeholder="Produit en français" class="border p-2 rounded" required>
-    <input type="text" name="tr" placeholder="Équivalent turc (facultatif)" class="border p-2 rounded">
-    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white py-2 rounded">Ajouter</button>
-  </form>
-
-  <p id="result" class="text-green-600 mt-4"></p>
-
-  <div id="list" class="mt-8 w-80 bg-white p-4 rounded-xl shadow-md">
-    <h2 class="font-semibold mb-3">📋 Liste actuelle</h2>
-    <div id="items" class="space-y-2"></div>
+      <div id="list" class="mt-4">
+        <h2 class="font-semibold">📋 Liste actuelle</h2>
+        <div id="items" class="mt-2 space-y-2"></div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzLbNd2XwVnuQ63UhciKrObdeXvFYv-77_KmqLtUqa2_aklBFwycXLsatJMmLtnkw84/exec"; // Mets ici ton URL Apps Script
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
 
-    const form = document.getElementById("formCourses");
+    const voiceBtn = document.getElementById("voiceBtn");
+    const status = document.getElementById("status");
     const result = document.getElementById("result");
     const itemsDiv = document.getElementById("items");
 
-    // --- Charger la liste ---
     async function loadList() {
-      itemsDiv.innerHTML = "<p>⏳ Chargement...</p>";
-      const res = await fetch(scriptURL);
-      const data = await res.json();
-      itemsDiv.innerHTML = "";
-      data.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "flex justify-between items-center border p-2 rounded";
-
-        div.innerHTML = `
-          <div>
-            <strong>${item.fr}</strong><br>
-            <span class="text-gray-500">${item.tr || ""}</span>
-          </div>
-          <div class="space-x-2">
-            <button onclick="editItem(${item.id}, '${item.fr}', '${item.tr || ""}')" class="text-blue-500">✏️</button>
-            <button onclick="deleteItem(${item.id})" class="text-red-500">🗑️</button>
-          </div>
-        `;
-        itemsDiv.appendChild(div);
-      });
+      try {
+        const res = await fetch(scriptURL);
+        const data = await res.json();
+        itemsDiv.innerHTML = "";
+        if (!data || data.length === 0) {
+          itemsDiv.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
+          return;
+        }
+        data.forEach(row => {
+          const d = document.createElement("div");
+          d.className = "flex justify-between items-center p-2 border rounded bg-gray-50";
+          d.innerHTML = `<div><span class="text-blue-600 font-medium">${row.magasin1 || ""}</span>
+                         <span class="mx-2 text-gray-300">|</span>
+                         <span class="text-orange-600 font-medium">${row.magasin2 || ""}</span></div>`;
+          itemsDiv.appendChild(d);
+        });
+      } catch (e) {
+        itemsDiv.innerHTML = "<div class='text-red-500'>Erreur chargement liste</div>";
+      }
     }
 
-    // --- Ajouter un produit ---
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const data = {
-        action: "add",
-        fr: form.fr.value,
-        tr: form.tr.value
+    // Utilisation de la reconnaissance vocale
+    voiceBtn.addEventListener("click", () => {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Chrome ou Edge.");
+        return;
+      }
+
+      result.textContent = "";
+      status.textContent = "🎧 J'écoute...";
+      const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new Rec();
+      rec.lang = "fr-FR";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.start();
+
+      rec.onresult = async (ev) => {
+        const phrase = ev.results[0][0].transcript;
+        status.textContent = "🗣️ " + phrase;
+        // Envoie au serveur (Apps Script) pour traitement IA
+        try {
+          const resp = await fetch(scriptURL, {
+            method: "POST",
+            body: JSON.stringify({ action: "ai_add", transcript: phrase })
+          });
+          const json = await resp.json();
+          if (json.ok) {
+            result.textContent = json.message || "Ajouté";
+            speak(json.message || "Ajouté à la liste");
+            loadList();
+          } else {
+            result.textContent = "Erreur serveur: " + (json.error || JSON.stringify(json));
+            speak("Désolé, je n'ai pas pu ajouter.");
+          }
+        } catch (err) {
+          result.textContent = "Erreur réseau: " + err;
+          speak("Erreur réseau.");
+        }
       };
 
-      fetch(scriptURL, { method: "POST", body: JSON.stringify(data) })
-        .then(res => res.text())
-        .then(() => {
-          result.textContent = "✅ Produit ajouté !";
-          form.reset();
-          loadList();
-        });
+      rec.onerror = (e) => {
+        status.textContent = "❌ Erreur reconnaissance vocale";
+        console.error("rec error", e);
+      };
+
+      rec.onend = () => {
+        status.textContent = "Appuie à nouveau pour parler";
+      };
     });
 
-    // --- Supprimer un produit ---
-    function deleteItem(id) {
-      if (!confirm("Supprimer cet élément ?")) return;
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", id })
-      })
-      .then(() => loadList());
+    // synthèse vocale
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "fr-FR";
+      window.speechSynthesis.speak(utter);
     }
 
-    // --- Modifier un produit ---
-    function editItem(id, fr, tr) {
-      const newFr = prompt("Nouveau nom FR :", fr);
-      const newTr = prompt("Nouveau nom TR :", tr);
-      if (newFr === null) return; // annulé
-      fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "edit", id, fr: newFr, tr: newTr })
-      })
-      .then(() => loadList());
-    }
-
-    // Charger la liste au démarrage
+    // initial load
     loadList();
   </script>
-
 </body>
 </html>
