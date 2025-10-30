@@ -91,6 +91,11 @@ img, video {
     --tw-bg-opacity: 1;
     /* background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1)); */
 }
+.text-gray-600 {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255);
+}
+
 
 
 
