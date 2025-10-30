@@ -81,11 +81,8 @@ body {
       display: none;
     }
 
-img, video {
+.img, video {
     max-width: 30%;
-    height: auto;
-    align-self: center;
-    vertical-align: middle;
 }
 .bg-white {
     --tw-bg-opacity: 1;
@@ -95,6 +92,7 @@ img, video {
     --tw-text-opacity: 1;
     color: rgb(255 255 255);
 }
+
 
 
 
