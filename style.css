@@ -1,1 +1,64 @@
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f4ff 0%, #fff7f3 100%);
+      font-family: "Inter", sans-serif;
+    }
+
+    .container {
+      max-width: 1100px;
+    }
+
+    .shop-card {
+      flex: 1;
+      background: white;
+      border-radius: 1rem;
+      padding: 1rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
+      min-height: 300px;
+    }
+
+    .shop-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .carrefour {
+      border-top: 5px solid #2563eb;
+    }
+
+    .prodor {
+      border-top: 5px solid #ea580c;
+    }
+
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.8rem;
+      border-radius: 0.5rem;
+      background-color: #f9fafb;
+    }
+
+    .item:hover {
+      background-color: #f3f4f6;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #ef4444;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .shops {
+        flex-direction: column;
+      }
+
+      .shop-card {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
 
