@@ -17,6 +17,11 @@
       min-height: 300px;
     }
 
+.bg-purple-600 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(120 150 215);
+}
+
     .shop-card:hover {
       transform: translateY(-3px);
     }
@@ -64,6 +69,7 @@
     .shops::-webkit-scrollbar {
       display: none;
     }
+
 
 
 
