@@ -1,8 +1,7 @@
-
 body {
-      background: linear-gradient(135deg, rgb(59 130 246 / 0.5) 0%, #fff7f3 100%); 
-      font-family: "Inter", sans-serif;
-    }
+    background: url(https://github.com/zaf57/LISTE_COURSE/blob/main/ZAFSHOP.png?raw=true);
+    font-family: "Inter", sans-serif;
+}
     /* 🖼️ Fond ZAFSHOP */
     body::before {
       content: "";
@@ -88,6 +87,7 @@ img, video {
     align-self: center;
     vertical-align: middle;
 }
+
 
 
 
