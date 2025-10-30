@@ -54,14 +54,17 @@
       cursor: pointer;
     }
 
-    @media (max-width: 768px) {
       .shops {
-        flex-direction: column;
-      }
-
-      .shop-card {
-        margin-bottom: 1rem;
-      }
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 1rem;
+      scrollbar-width: none;
     }
+    .shops::-webkit-scrollbar {
+      display: none;
+    }
+
+
 
 
