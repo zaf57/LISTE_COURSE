@@ -3,104 +3,117 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Liste Courses</title>
-   <link rel="icon" type="image/x-icon" href="ZAFSHOP.ico" />
+  <title>Liste de courses - IA vocale</title>
+
+  <!-- 🛍️ Icône -->
+  <link rel="icon" type="image/x-icon" href="ZAFSHOP.ico" />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
-  <div class="w-full max-w-4xl">
-    <h1 class="text-2xl font-bold mb-4 text-center">🛒 Liste de courses — ZAF_IA</h1>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="container w-full">
+    <h1 class="text-3xl font-bold text-center mb-6">🛒 Liste de courses — IA vocale</h1>
 
-    <div class="bg-white p-4 rounded-lg shadow mb-4">
-      <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
-      <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2">📢 Lire la liste</button>
-
-      <p id="status" class="text-sm text-gray-600 mb-3 text-center">Appuie et dis : "Ajoute pain à Carrefour" ou "Ajoute œufs à Prodor"</p>
-      <div id="result" class="text-green-600 mb-3 text-center"></div>
+    <div class="bg-white p-4 rounded-lg shadow mb-6 text-center">
+      <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3 hover:bg-blue-700">🎙️ Ajouter par la voix</button>
+      <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2 hover:bg-purple-700">📢 Lire la liste</button>
+      <p id="status" class="text-sm text-gray-600 mt-3">Appuie et dis : "Ajoute pain à Carrefour" ou "Ajoute fromage à Prodor"</p>
+      <p id="result" class="text-green-600 mt-2"></p>
     </div>
 
-    <!-- Deux listes côte à côte -->
-    <div class="flex flex-row gap-4 overflow-x-auto">
-      <div class="flex-1 min-w-[45%] bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold text-blue-600 mb-2 text-center">📋 CARREFOUR</h2>
-        <div id="items1" class="space-y-2"></div>
+    <div class="shops flex gap-4">
+      <!-- 🏠 Carrefour -->
+      <div class="shop-card carrefour">
+        <h2 class="text-blue-600 font-semibold text-lg mb-2">🏠 Carrefour</h2>
+        <div id="carrefourList" class="space-y-2"></div>
       </div>
 
-      <div class="flex-1 min-w-[45%] bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold text-orange-600 mb-2 text-center">📋 PRODOR</h2>
-        <div id="items2" class="space-y-2"></div>
+      <!-- 🛍️ Prodor -->
+      <div class="shop-card prodor">
+        <h2 class="text-orange-600 font-semibold text-lg mb-2">🛍️ Prodor</h2>
+        <div id="prodorList" class="space-y-2"></div>
       </div>
     </div>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxOMfQMvTBownkQPMGqkbefHxue5PXESJ-jSVgyMgZuzGBVnHl4x0Cuxc6q7uzrPltK/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
 
     const voiceBtn = document.getElementById("voiceBtn");
     const status = document.getElementById("status");
     const result = document.getElementById("result");
-    const items1 = document.getElementById("items1");
-    const items2 = document.getElementById("items2");
+    const carrefourList = document.getElementById("carrefourList");
+    const prodorList = document.getElementById("prodorList");
 
-    // 🔊 Lecture vocale
+    // 🔊 Synthèse vocale
     function speak(text) {
       if (!("speechSynthesis" in window)) return;
       const utter = new SpeechSynthesisUtterance(text);
       utter.lang = "fr-FR";
       utter.rate = 1;
       utter.pitch = 1;
-      utter.volume = 1;
       window.speechSynthesis.speak(utter);
     }
 
-    // 📋 Charger la liste
+    // 📋 Chargement de la liste depuis Google Sheets
     async function loadList() {
       try {
         const res = await fetch(scriptURL);
         const data = await res.json();
-        items1.innerHTML = "";
-        items2.innerHTML = "";
+        carrefourList.innerHTML = "";
+        prodorList.innerHTML = "";
 
         if (!data || data.length === 0) {
-          items1.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
-          items2.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
+          carrefourList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
+          prodorList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
           return;
         }
 
         data.forEach(row => {
           if (row.magasin1) {
-            const d = document.createElement("div");
-            d.className = "flex justify-between items-center p-2 border rounded bg-gray-50";
-            d.innerHTML = `<span>${row.magasin1}</span>
-              <button onclick="deleteItem(${row.id}, '1')" class="text-red-500">🗑️</button>`;
-            items1.appendChild(d);
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `<span>${row.magasin1}</span> <button class="delete-btn" data-store="1" data-id="${row.id}">🗑️</button>`;
+            carrefourList.appendChild(div);
           }
           if (row.magasin2) {
-            const d = document.createElement("div");
-            d.className = "flex justify-between items-center p-2 border rounded bg-gray-50";
-            d.innerHTML = `<span>${row.magasin2}</span>
-              <button onclick="deleteItem(${row.id}, '2')" class="text-red-500">🗑️</button>`;
-            items2.appendChild(d);
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `<span>${row.magasin2}</span> <button class="delete-btn" data-store="2" data-id="${row.id}">🗑️</button>`;
+            prodorList.appendChild(div);
           }
         });
+
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            const id = e.target.getAttribute("data-id");
+            await deleteItem(id);
+          });
+        });
+
       } catch (e) {
-        console.error(e);
-        items1.innerHTML = "<div class='text-red-500'>Erreur chargement liste</div>";
-        items2.innerHTML = "<div class='text-red-500'>Erreur chargement liste</div>";
+        carrefourList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
+        prodorList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
       }
     }
 
-    // 🗑️ Supprimer un produit
-    async function deleteItem(id, store) {
-      await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", id, store })
-      });
-      speak("Produit supprimé");
-      loadList();
+    // ❌ Suppression d’un élément
+    async function deleteItem(id) {
+      try {
+        await fetch(scriptURL, {
+          method: "POST",
+          body: JSON.stringify({ action: "delete", id: Number(id) })
+        });
+        speak("Produit supprimé !");
+        loadList();
+      } catch {
+        alert("Erreur lors de la suppression");
+      }
     }
 
-    // 🔊 Lecture de la liste complète
+    // 📢 Lecture vocale de la liste
     async function readListAloud() {
       const res = await fetch(scriptURL);
       const data = await res.json();
@@ -109,17 +122,15 @@
         return;
       }
 
-      let phrase1 = "Chez Carrefour : ";
-      let phrase2 = "Chez Prodor : ";
+      let phrase = "Voici votre liste : ";
       data.forEach(row => {
-        if (row.magasin1) phrase1 += `${row.magasin1}, `;
-        if (row.magasin2) phrase2 += `${row.magasin2}, `;
+        if (row.magasin1) phrase += `${row.magasin1} chez Carrefour, `;
+        if (row.magasin2) phrase += `${row.magasin2} chez Prodor, `;
       });
-
-      speak(phrase1 + " " + phrase2);
+      speak(phrase);
     }
 
-    // 🎙️ Reconnaissance vocale
+    // 🎤 Reconnaissance vocale
     voiceBtn.addEventListener("click", () => {
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
         alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Chrome ou Edge.");
@@ -138,7 +149,6 @@
       rec.onresult = async (ev) => {
         const phrase = ev.results[0][0].transcript;
         status.textContent = "🗣️ " + phrase;
-
         try {
           const resp = await fetch(scriptURL, {
             method: "POST",
@@ -150,28 +160,27 @@
             speak(json.message || "Ajouté à la liste");
             loadList();
           } else {
-            result.textContent = "Erreur serveur: " + (json.error || JSON.stringify(json));
+            result.textContent = "Erreur serveur : " + (json.error || JSON.stringify(json));
             speak("Désolé, je n'ai pas pu ajouter.");
           }
         } catch (err) {
-          result.textContent = "Erreur réseau: " + err;
+          result.textContent = "Erreur réseau : " + err;
           speak("Erreur réseau.");
         }
       };
 
-      rec.onerror = () => {
+      rec.onerror = (e) => {
         status.textContent = "❌ Erreur reconnaissance vocale";
+        console.error("rec error", e);
       };
 
       rec.onend = () => {
-        status.textContent = "Appuie à nouveau pour parler";
+        status.textContent = "Appuie à nouveau pour parler"; 
       };
     });
 
+    document.getElementById("readList").addEventListener("click", readListAloud);
     loadList();
   </script>
 </body>
 </html>
-
-
-
