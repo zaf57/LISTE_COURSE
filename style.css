@@ -1,5 +1,5 @@
     body {
-      background: linear-gradient(135deg, #f0f4ff 0%, #fff7f3 100%);
+      background: linear-gradient(135deg, rgb(59 130 246 / 0.5) 0%, #fff7f3 100%); 
       font-family: "Inter", sans-serif;
     }
 
@@ -64,6 +64,7 @@
     .shops::-webkit-scrollbar {
       display: none;
     }
+
 
 
 
