@@ -82,6 +82,12 @@ body {
       display: none;
     }
 
+img, video {
+    max-width: 30%;
+    height: auto;
+    align-self: center;
+    vertical-align: middle;
+}
 
 
 
