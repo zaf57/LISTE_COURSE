@@ -1,5 +1,5 @@
 body {
-    background: url(https://github.com/zaf57/LISTE_COURSE/blob/main/rukzaf.png?raw=true);
+    background: url();
     font-family: "Inter", sans-serif;
 }
     /* 🖼️ Fond ZAF */
@@ -106,6 +106,7 @@ body {
     color: rgb(37 99 235 / var(--tw-text-opacity, 1));
     text-align: center;
 }
+
 
 
 
