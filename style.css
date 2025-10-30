@@ -10,7 +10,7 @@ body {
       left: 0;
       width: 100%;
       height: 100%;
-      background: url("ZAFSHOP.png") center/cover no-repeat;
+      background: url("rukzaf.png") center/cover no-repeat;
       filter: blur(6px) brightness(0.7);
       z-index: -1;
     }
@@ -92,6 +92,7 @@ body {
     --tw-text-opacity: 1;
     color: rgb(255 255 255);
 }
+
 
 
 
