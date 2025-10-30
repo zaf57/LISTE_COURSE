@@ -13,6 +13,7 @@
     <div class="bg-white p-4 rounded-lg shadow">
       <button id="voiceBtn" class="w-full bg-blue-600 text-white py-2 rounded mb-3">🎙️ Ajouter par la voix</button>
       <button id="readList" class="bg-purple-600 text-white py-2 rounded w-full mt-2">📢 Lire la liste</button>
+      <button id="deleteLast" class="bg-red-500 text-white py-2 rounded w-full mt-2">🗑️ Supprimer le dernier produit</button>
 
       <p id="status" class="text-sm text-gray-600 mb-3">Appuie et dis : "Ajoute pain et œufs au magasin 2"</p>
       <div id="result" class="text-green-600 mb-3"></div>
@@ -25,26 +26,26 @@
   </div>
 
   <script>
-    document.getElementById("readList").addEventListener("click", readListAloud);
-
     const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
-
     const voiceBtn = document.getElementById("voiceBtn");
     const status = document.getElementById("status");
     const result = document.getElementById("result");
     const itemsDiv = document.getElementById("items");
 
-  function speak(text) {
-  if (!("speechSynthesis" in window)) return;
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "fr-FR";
-  utter.rate = 1;      // vitesse
-  utter.pitch = 1;     // hauteur
-  utter.volume = 1;    // volume
-  window.speechSynthesis.speak(utter);
-}
+    document.getElementById("readList").addEventListener("click", readListAloud);
+    document.getElementById("deleteLast").addEventListener("click", deleteLast);
 
-    
+    // fonction synthèse vocale
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "fr-FR";
+      utter.rate = 1;
+      utter.pitch = 1;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // chargement et affichage de la liste
     async function loadList() {
       try {
         const res = await fetch(scriptURL);
@@ -57,35 +58,73 @@
         data.forEach(row => {
           const d = document.createElement("div");
           d.className = "flex justify-between items-center p-2 border rounded bg-gray-50";
-          d.innerHTML = `<div><span class="text-blue-600 font-medium">${row.magasin1 || ""}</span>
-                         <span class="mx-2 text-gray-300">|</span>
-                         <span class="text-orange-600 font-medium">${row.magasin2 || ""}</span></div>`;
+
+          d.innerHTML = `
+            <div>
+              <span class="text-blue-600 font-medium">${row.magasin1 || ""}</span>
+              <span class="mx-2 text-gray-300">|</span>
+              <span class="text-orange-600 font-medium">${row.magasin2 || ""}</span>
+            </div>
+            <div class="space-x-2">
+              <button onclick="deleteItem(${row.id})" class="text-red-500">🗑️</button>
+            </div>
+          `;
           itemsDiv.appendChild(d);
         });
       } catch (e) {
         itemsDiv.innerHTML = "<div class='text-red-500'>Erreur chargement liste</div>";
       }
     }
-    
+
+    // lecture vocale de la liste
     async function readListAloud() {
-  const res = await fetch(scriptURL);
-  const data = await res.json();
-  if (!data || data.length === 0) {
-    speak("La liste est vide !");
-    return;
-  }
+      const res = await fetch(scriptURL);
+      const data = await res.json();
+      if (!data || data.length === 0) {
+        speak("La liste est vide !");
+        return;
+      }
 
-  let phrase = "Voici votre liste de courses : ";
-  data.forEach(row => {
-    if (row.magasin1) phrase += `${row.magasin1} au magasin 1, `;
-    if (row.magasin2) phrase += `${row.magasin2} au magasin 2, `;
-  });
+      let phrase = "Voici votre liste de courses : ";
+      data.forEach(row => {
+        if (row.magasin1) phrase += `${row.magasin1} au magasin 1, `;
+        if (row.magasin2) phrase += `${row.magasin2} au magasin 2, `;
+      });
 
-  speak(phrase);
-}
+      speak(phrase);
+    }
 
+    // supprimer un produit spécifique
+    async function deleteItem(id) {
+      const resp = await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "delete", id })
+      });
+      const json = await resp.json();
+      if (json.ok) {
+        speak("Produit supprimé");
+        loadList();
+      } else {
+        speak("Impossible de supprimer le produit");
+      }
+    }
 
-    // Utilisation de la reconnaissance vocale
+    // supprimer le dernier produit
+    async function deleteLast() {
+      const resp = await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "delete_last" })
+      });
+      const json = await resp.json();
+      if (json.ok) {
+        speak("Dernier produit supprimé");
+        loadList();
+      } else {
+        speak("Rien à supprimer");
+      }
+    }
+
+    // ajout vocal via IA
     voiceBtn.addEventListener("click", () => {
       if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
         alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Chrome ou Edge.");
@@ -104,7 +143,6 @@
       rec.onresult = async (ev) => {
         const phrase = ev.results[0][0].transcript;
         status.textContent = "🗣️ " + phrase;
-        // Envoie au serveur (Apps Script) pour traitement IA
         try {
           const resp = await fetch(scriptURL, {
             method: "POST",
@@ -131,20 +169,12 @@
       };
 
       rec.onend = () => {
-        status.textContent = "Appuie à nouveau pour parler";
+        status.textContent = "Appuie à nouveau pour parler"; 
       };
     });
 
-    // synthèse vocale
-    function speak(text) {
-      if (!("speechSynthesis" in window)) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "fr-FR";
-      window.speechSynthesis.speak(utter);
-    }
-
-    // initial load
+    // chargement initial
     loadList();
   </script>
 </body>
-</html> 
+</html>
