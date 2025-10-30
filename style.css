@@ -33,6 +33,10 @@ body {
     background-color: rgb(234 88 12);
 }
 
+.bg-blue-600 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(10 113 78);
+}
     .shop-card:hover {
       transform: translateY(-3px);
     }
@@ -92,6 +96,7 @@ body {
     --tw-text-opacity: 1;
     color: rgb(255 255 255);
 }
+
 
 
 
