@@ -125,7 +125,7 @@ async function deleteItem(id) {
         method: "POST",
         body: JSON.stringify({ action: "delete", id: Number(id) })
       });
-      speak("Produit supprimé !");
+      new Audio("recycle-bin.mp3").play();
       itemDiv.remove();
     } catch {
       alert("Erreur lors de la suppression");
@@ -205,6 +205,7 @@ async function deleteItem(id) {
   </script>
 </body>
 </html>
+
 
 
 
