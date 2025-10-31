@@ -52,6 +52,9 @@
 
   <script>
     const scriptURL = "https://script.google.com/macros/s/AKfycbxSfZhqY8t7VyeMtfQPUc-LBHl4kU8jB1N-bs41MGOMCp5fT3AU7diaV9N2d7z8BNbF/exec";
+    const soundDelete = new Audio("recycle-bin.mp3");
+    soundDelete.preload = "auto";
+
 
     const voiceBtn = document.getElementById("voiceBtn");
     const status = document.getElementById("status");
@@ -205,6 +208,7 @@ async function deleteItem(id) {
   </script>
 </body>
 </html>
+
 
 
 
