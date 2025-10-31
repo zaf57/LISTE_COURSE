@@ -165,7 +165,7 @@ async function deleteItem(id) {
       status.textContent = "🎧 J'écoute...";
       const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
       const rec = new Rec();
-      rec.lang = "fr-FR";
+      rec.lang = "fr-FR,tr-TR";
       rec.interimResults = false;
       rec.maxAlternatives = 1;
       rec.start();
@@ -216,6 +216,7 @@ async function deleteItem(id) {
   </script>
 </body>
 </html>
+
 
 
 
