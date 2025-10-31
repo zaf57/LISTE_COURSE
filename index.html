@@ -110,19 +110,28 @@
       }
     }
 
-    // ❌ Suppression d’un élément
-    async function deleteItem(id) {
-      try {
-        await fetch(scriptURL, {
-          method: "POST",
-          body: JSON.stringify({ action: "delete", id: Number(id) })
-        });
-        speak("Produit supprimé !");
-        loadList();
-      } catch {
-        alert("Erreur lors de la suppression");
-      }
+// ❌ Suppression d’un élément avec animation
+async function deleteItem(id) {
+  const itemDiv = document.querySelector(`.delete-btn[data-id="${id}"]`)?.closest(".item");
+  if (!itemDiv) return;
+
+  // Animation
+  itemDiv.classList.add("fade-out");
+
+  setTimeout(async () => {
+    try {
+      await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "delete", id: Number(id) })
+      });
+      speak("Produit supprimé !");
+      itemDiv.remove();
+    } catch {
+      alert("Erreur lors de la suppression");
     }
+  }, 400); // durée de la transition CSS
+}
+
 
     // 📢 Lecture vocale de la liste
     async function readListAloud() {
@@ -195,6 +204,7 @@
   </script>
 </body>
 </html>
+
 
 
 
