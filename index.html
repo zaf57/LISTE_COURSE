@@ -179,11 +179,19 @@ async function deleteItem(id) {
             body: JSON.stringify({ action: "ai_add", transcript: phrase })
           });
           const json = await resp.json();
-          if (json.ok) {
-            result.textContent = json.message || "Ajouté";
-            speak(json.message || "Ajouté à la liste");
-            loadList();
-          } else {
+         if (json.ok) {
+  let msg = json.message || "";
+  if (msg.includes("magasin1")) msg = "Ajouté chez Carrefour";
+  else if (msg.includes("magasin2")) msg = "Ajouté chez Prodor";
+  else msg = "Ajouté à la liste";
+
+  result.textContent = msg;
+  speak(msg);
+  loadList();
+}
+ 
+          
+          else {
             result.textContent = "Erreur serveur : " + (json.error || JSON.stringify(json));
             speak("Désolé, je n'ai pas pu ajouter.");
           }
@@ -208,6 +216,7 @@ async function deleteItem(id) {
   </script>
 </body>
 </html>
+
 
 
 
