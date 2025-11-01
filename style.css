@@ -58,15 +58,6 @@ body {
     margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
      }
- 
-    .item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 2px;
-      border-radius: 0.5rem;
-      background-color: #f9fafb;
-    }
 
     .item:hover {
       background-color: #f3f4f6;
@@ -117,7 +108,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 10px;
+  padding: 1px 2px;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
   border: 1px solid #ddd;
@@ -140,6 +131,7 @@ body {
 .delete-btn:hover {
   transform: scale(1.2);
 }
+
 
 
 
