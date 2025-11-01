@@ -219,9 +219,12 @@ async function deleteItem(id) {
 
     document.getElementById("readList").addEventListener("click", readListAloud);
     loadList();
+    setInterval(loadList, 5000); // actualise toutes les 5 secondes
+
   </script>
 </body>
 </html>
+
 
 
 
