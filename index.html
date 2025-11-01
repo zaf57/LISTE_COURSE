@@ -165,7 +165,8 @@ async function deleteItem(id) {
       status.textContent = "🎧 J'écoute...";
       const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
       const rec = new Rec();
-      rec.lang = "fr-FR,tr-TR";
+      rec.lang = "fr-FR";
+      
       rec.interimResults = false;
       rec.maxAlternatives = 1;
       rec.start();
@@ -173,10 +174,15 @@ async function deleteItem(id) {
       rec.onresult = async (ev) => {
         const phrase = ev.results[0][0].transcript;
         status.textContent = "🗣️ " + phrase;
+
+          // Si la phrase contient des mots turcs, ajoute un flag pour l'IA
+  const turkishHints = ["ekle", "peynir", "süt", "migros", "prodor", "domates", "al", "ve"];
+  const isTurkish = turkishHints.some(word => phrase.toLowerCase().includes(word));
+        
         try {
           const resp = await fetch(scriptURL, {
             method: "POST",
-            body: JSON.stringify({ action: "ai_add", transcript: phrase })
+            body: JSON.stringify({  action: "ai_add", transcript: phrase, lang: isTurkish ? "tr" : "fr" })
           });
           const json = await resp.json();
          if (json.ok) {
@@ -216,6 +222,7 @@ async function deleteItem(id) {
   </script>
 </body>
 </html>
+
 
 
 
