@@ -1,248 +1,118 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Le site a changé — Liste de courses</title>
+  <meta name="description" content="Ce site a migré vers une nouvelle plateforme : liste-courses-2025.web.app" />
 
-  <title>Liste Courses</title>
+  <!-- Utilise votre logo rukzaf.png placé à la racine du site -->
+  <link rel="icon" href="/rukzaf.png" />
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/x-icon" href="rukzaf.ico" />
+  <!-- Google Font (optionnel) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      /* Couleurs d'accent — ajustez pour coller précisément au logo rukzaf.png */
+      --bg:#0f1724; /* sombre */
+      --card:#0b1220;
+      --muted:#a8b3c6;
+      --accent1:#ff6b35; /* orange chaud */
+      --accent2:#1fb6ff; /* bleu clair */
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:radial-gradient(1200px 600px at 10% 10%, rgba(31,182,255,0.06), transparent),
+                 radial-gradient(900px 400px at 90% 90%, rgba(255,107,53,0.06), transparent),
+                 var(--bg);
+      color:#eef2f7; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      display:flex;align-items:center;justify-content:center;padding:32px;
+    }
 
+    .card{
+      width:100%;max-width:920px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;padding:36px;box-shadow:0 10px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px);
+      display:grid;grid-template-columns:160px 1fr;gap:24px;align-items:center;border:1px solid rgba(255,255,255,0.03)
+    }
+
+    .logo-wrap{display:flex;align-items:center;justify-content:center}
+    .logo{width:140px;height:140px;object-fit:contain;border-radius:12px;padding:10px;background:var(--glass);border:1px solid rgba(255,255,255,0.04)}
+
+    h1{margin:0 0 6px 0;font-size:28px;line-height:1.05;font-weight:700;letter-spacing:-0.02em}
+    p.lead{margin:0 0 12px 0;color:var(--muted);font-size:15px}
+
+    .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:12px;border:0;cursor:pointer;font-weight:600;font-size:15px;text-decoration:none;
+      transition:transform .12s ease, box-shadow .12s ease;
+    }
+    .btn-primary{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#07202b;box-shadow:0 6px 20px rgba(31,182,255,0.12)}
+    .btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .btn:active{transform:translateY(1px)}
+
+    .meta{font-size:13px;color:var(--muted);margin-top:8px}
+
+    .right{padding:8px 0}
+
+    .countdown{font-weight:700;color:var(--accent2)}
+
+    footer{grid-column:1/-1;margin-top:18px;border-top:1px dashed rgba(255,255,255,0.03);padding-top:14px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+
+    @media (max-width:760px){
+      .card{grid-template-columns:1fr;align-items:center;text-align:center}
+      .logo{width:110px;height:110px;margin:0 auto}
+      footer{flex-direction:column;gap:8px}
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6">
-  <div class="container w-full">
-      
-
-    <div class="bg-white/80 p-4 rounded-lg shadow mb-6 flex items-center gap-4 backdrop-blur">
-  <!-- Logo à gauche -->
-  <img src="rukzaf.png" alt="Logo rukzaf" class="w-16 h-16 object-contain rounded"style="
-    margin-bottom: 50px;
-">
-
-  <!-- Contenu des boutons et texte -->
-  <div class="flex-1 text-center md:text-left">
-    <button id="voiceBtn" class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 rounded mb-3 hover:bg-blue-700"style="
-    background-color: rgb(10 113 78);">🎙️ Ajouter par la voix</button>
-    <button id="readList" class="w-full md:w-auto bg-purple-600 text-white py-2 px-4 rounded mb-3 hover:bg-purple-700"style="
-    background-color: rgb(234 88 12);">🔊 Lire la liste</button>
-    <p id="status" class="text-sm text-gray-700 mt-2">Dis : "Ajoute pain à Carrefour" ou "Ajoute fromage à Prodor"</p>
-    <p id="result" class="text-green-700 mt-1 font-semibold"></p>
-  </div>
-</div>
-
-
-    <div class="shops flex gap-4">
-      <!-- 🏠 Carrefour -->
-      <div class="shop-card carrefour">
-        <h2 class="text-blue-600 font-semibold text-lg mb-2">🇫🇷 Carrefour</h2>
-        <div id="carrefourList" class="space-y-2"></div>
-      </div>
-
-      <!-- 🛍️ Prodor -->
-      <div class="shop-card prodor">
-        <h2 class="text-orange-600 font-semibold text-lg mb-2">🇹🇷 Prodor</h2>
-        <div id="prodorList" class="space-y-2"></div>
-      </div>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <div class="logo-wrap">
+      <img src="/rukzaf.png" alt="Logo" class="logo" />
     </div>
-  </div>
+
+    <div class="right">
+      <h1 id="title">Ce site a migré vers une nouvelle plateforme</h1>
+      <p class="lead">Nous avons déménagé ! Pour continuer à utiliser la liste de courses, rendez-vous maintenant sur :</p>
+
+      <div class="actions">
+        <a class="btn btn-primary" href="https://liste-courses-2025.web.app/" id="open-btn">Ouvrir la nouvelle plateforme →</a>
+        <a class="btn btn-ghost" href="#" id="stay-btn">Rester ici</a>
+      </div>
+
+      <p class="meta">Ou copiez-collez ce lien dans votre navigateur : <br><strong>https://liste-courses-2025.web.app/</strong></p>
+
+      <p class="meta">Vous serez automatiquement redirigé dans <span class="countdown" id="count">8</span> secondes. <a href="#open" id="cancel-link" style="color:var(--accent1);text-decoration:underline;">Annuler</a></p>
+
+      <footer>
+        <span>Site migré — Liste de courses</span>
+        <span>Si vous avez besoin d'aide, contactez l'administrateur.</span>
+      </footer>
+    </div>
+  </main>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxdmg_BaKBSRnDT3hVkCNVo9VkjTu5SEPPK0CLAcQSa7nsaVkRhHVLcg5nkkFyy_CKU/exec";
-    const soundDelete = new Audio("recycle-bin.mp3");
-    soundDelete.preload = "auto";
-
-
-    const voiceBtn = document.getElementById("voiceBtn");
-    const status = document.getElementById("status");
-    const result = document.getElementById("result");
-    const carrefourList = document.getElementById("carrefourList");
-    const prodorList = document.getElementById("prodorList");
-
-    // 🔊 Synthèse vocale
-    function speak(text) {
-      if (!("speechSynthesis" in window)) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = "fr-FR";
-      utter.rate = 1;
-      utter.pitch = 1;
-      window.speechSynthesis.speak(utter);
-    }
-
-    // 📋 Chargement de la liste depuis Google Sheets
-    async function loadList() {
-      try {
-        const res = await fetch(scriptURL);
-        const data = await res.json();
-        carrefourList.innerHTML = "";
-        prodorList.innerHTML = "";
-
-        if (!data || data.length === 0) {
-          carrefourList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
-          prodorList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
-          return;
+    // Petite redirection après compte à rebours — l'utilisateur peut annuler
+    (function(){
+      var t = 8; var el = document.getElementById('count'); var timer=null; var doRedirect=true;
+      function tick(){
+        el.textContent = t;
+        if(t<=0){
+          if(doRedirect) window.location.href = 'https://liste-courses-2025.web.app/';
+          clearInterval(timer);
         }
-
-        data.forEach(row => {
-          if (row.magasin1) {
-            const div = document.createElement("div");
-            div.className = "item";
-            div.innerHTML = `<span>${row.magasin1}</span> <button class="delete-btn" data-store="1" data-id="${row.id}">🗑️</button>`;
-            carrefourList.appendChild(div);
-          }
-          if (row.magasin2) {
-            const div = document.createElement("div");
-            div.className = "item";
-            div.innerHTML = `<span>${row.magasin2}</span> <button class="delete-btn" data-store="2" data-id="${row.id}">🗑️</button>`;
-            prodorList.appendChild(div);
-          }
-        });
-
-        document.querySelectorAll(".delete-btn").forEach(btn => {
-          btn.addEventListener("click", async (e) => {
-            const id = e.target.getAttribute("data-id");
-            await deleteItem(id);
-          });
-        });
-
-      } catch (e) {
-        carrefourList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
-        prodorList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
+        t--;
       }
-    }
+      timer = setInterval(tick,1000);
 
-// ❌ Suppression d’un élément avec animation
-async function deleteItem(id) {
-  const itemDiv = document.querySelector(`.delete-btn[data-id="${id}"]`)?.closest(".item");
-  if (!itemDiv) return;
-
-  // Animation
-  itemDiv.classList.add("fade-out");
-
-  setTimeout(async () => {
-    try {
-      await fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({ action: "delete", id: Number(id) })
-      });
-      new Audio("recycle-bin.mp3").play();
-      itemDiv.remove();
-    } catch {
-      alert("Erreur lors de la suppression");
-    }
-  }, 400); // durée de la transition CSS
-}
-
-
-    // 📢 Lecture vocale de la liste
-    async function readListAloud() {
-      const res = await fetch(scriptURL);
-      const data = await res.json();
-      if (!data || data.length === 0) {
-        speak("La liste est vide !");
-        return;
-      }
-
-      let phrase = "Voici votre liste : ";
-      data.forEach(row => {
-        if (row.magasin1) phrase += `${row.magasin1} chez Carrefour, `;
-        if (row.magasin2) phrase += `${row.magasin2} chez Prodor, `;
-      });
-      speak(phrase);
-    }
-
-    // 🎤 Reconnaissance vocale
-    voiceBtn.addEventListener("click", () => {
-      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-        alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Chrome ou Edge.");
-        return;
-      }
-
-      result.textContent = "";
-      status.textContent = "🎧 J'écoute...";
-      const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const rec = new Rec();
-      rec.lang = "fr-FR";
-      
-      rec.interimResults = false;
-      rec.maxAlternatives = 1;
-      rec.start();
-
-      rec.onresult = async (ev) => {
-        const phrase = ev.results[0][0].transcript;
-        status.textContent = "🗣️ " + phrase;
-
-          // Si la phrase contient des mots turcs, ajoute un flag pour l'IA
-  const turkishHints = ["ekle", "peynir", "süt", "migros", "prodor", "domates", "al", "ve"];
-  const isTurkish = turkishHints.some(word => phrase.toLowerCase().includes(word));
-        
-        try {
-          const resp = await fetch(scriptURL, {
-            method: "POST",
-            body: JSON.stringify({  action: "ai_add", transcript: phrase, lang: isTurkish ? "tr" : "fr" })
-          });
-          const json = await resp.json();
-         if (json.ok) {
-  let msg = json.message || "";
-  if (msg.includes("magasin1")) msg = "Ajouté chez Carrefour";
-  else if (msg.includes("magasin2")) msg = "Ajouté chez Prodor";
-  else msg = "Ajouté à la liste";
-
-  result.textContent = msg;
-  speak(msg);
-  loadList();
-}
- 
-          
-          else {
-            result.textContent = "Erreur serveur : " + (json.error || JSON.stringify(json));
-            speak("Désolé, je n'ai pas pu ajouter.");
-          }
-        } catch (err) {
-          result.textContent = "Erreur réseau : " + err;
-          speak("Erreur réseau.");
-        }
-      };
-
-      rec.onerror = (e) => {
-        status.textContent = "❌ Erreur reconnaissance vocale";
-        console.error("rec error", e);
-      };
-
-      rec.onend = () => {
-        status.textContent = "Appuie à nouveau pour parler"; 
-      };
-    });
-
-    document.getElementById("readList").addEventListener("click", readListAloud);
-    loadList();
-    setInterval(loadList, 5000); // actualise toutes les 5 secondes
-
+      document.getElementById('cancel-link').addEventListener('click', function(e){ e.preventDefault(); doRedirect=false; clearInterval(timer); el.textContent='Annulé'; });
+      document.getElementById('stay-btn').addEventListener('click', function(e){ e.preventDefault(); doRedirect=false; clearInterval(timer); el.textContent='Annulé'; });
+      document.getElementById('open-btn').addEventListener('click', function(){ doRedirect=false; });
+    })();
   </script>
 </body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</html> 
