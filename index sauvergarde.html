@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <title>Liste Courses</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="rukzaf.ico" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="container w-full">
+      
+
+    <div class="bg-white/80 p-4 rounded-lg shadow mb-6 flex items-center gap-4 backdrop-blur">
+  <!-- Logo à gauche -->
+  <img src="rukzaf.png" alt="Logo rukzaf" class="w-16 h-16 object-contain rounded"style="
+    margin-bottom: 50px;
+">
+
+  <!-- Contenu des boutons et texte -->
+  <div class="flex-1 text-center md:text-left">
+    <button id="voiceBtn" class="w-full md:w-auto bg-blue-600 text-white py-2 px-4 rounded mb-3 hover:bg-blue-700"style="
+    background-color: rgb(10 113 78);">🎙️ Ajouter par la voix</button>
+    <button id="readList" class="w-full md:w-auto bg-purple-600 text-white py-2 px-4 rounded mb-3 hover:bg-purple-700"style="
+    background-color: rgb(234 88 12);">🔊 Lire la liste</button>
+    <p id="status" class="text-sm text-gray-700 mt-2">Dis : "Ajoute pain à Carrefour" ou "Ajoute fromage à Prodor"</p>
+    <p id="result" class="text-green-700 mt-1 font-semibold"></p>
+  </div>
+</div>
+
+
+    <div class="shops flex gap-4">
+      <!-- 🏠 Carrefour -->
+      <div class="shop-card carrefour">
+        <h2 class="text-blue-600 font-semibold text-lg mb-2">🇫🇷 Carrefour</h2>
+        <div id="carrefourList" class="space-y-2"></div>
+      </div>
+
+      <!-- 🛍️ Prodor -->
+      <div class="shop-card prodor">
+        <h2 class="text-orange-600 font-semibold text-lg mb-2">🇹🇷 Prodor</h2>
+        <div id="prodorList" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxdmg_BaKBSRnDT3hVkCNVo9VkjTu5SEPPK0CLAcQSa7nsaVkRhHVLcg5nkkFyy_CKU/exec";
+    const soundDelete = new Audio("recycle-bin.mp3");
+    soundDelete.preload = "auto";
+
+
+    const voiceBtn = document.getElementById("voiceBtn");
+    const status = document.getElementById("status");
+    const result = document.getElementById("result");
+    const carrefourList = document.getElementById("carrefourList");
+    const prodorList = document.getElementById("prodorList");
+
+    // 🔊 Synthèse vocale
+    function speak(text) {
+      if (!("speechSynthesis" in window)) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "fr-FR";
+      utter.rate = 1;
+      utter.pitch = 1;
+      window.speechSynthesis.speak(utter);
+    }
+
+    // 📋 Chargement de la liste depuis Google Sheets
+    async function loadList() {
+      try {
+        const res = await fetch(scriptURL);
+        const data = await res.json();
+        carrefourList.innerHTML = "";
+        prodorList.innerHTML = "";
+
+        if (!data || data.length === 0) {
+          carrefourList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
+          prodorList.innerHTML = "<div class='text-gray-500'>Liste vide</div>";
+          return;
+        }
+
+        data.forEach(row => {
+          if (row.magasin1) {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `<span>${row.magasin1}</span> <button class="delete-btn" data-store="1" data-id="${row.id}">🗑️</button>`;
+            carrefourList.appendChild(div);
+          }
+          if (row.magasin2) {
+            const div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `<span>${row.magasin2}</span> <button class="delete-btn" data-store="2" data-id="${row.id}">🗑️</button>`;
+            prodorList.appendChild(div);
+          }
+        });
+
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+          btn.addEventListener("click", async (e) => {
+            const id = e.target.getAttribute("data-id");
+            await deleteItem(id);
+          });
+        });
+
+      } catch (e) {
+        carrefourList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
+        prodorList.innerHTML = "<div class='text-red-500'>Erreur de chargement</div>";
+      }
+    }
+
+// ❌ Suppression d’un élément avec animation
+async function deleteItem(id) {
+  const itemDiv = document.querySelector(`.delete-btn[data-id="${id}"]`)?.closest(".item");
+  if (!itemDiv) return;
+
+  // Animation
+  itemDiv.classList.add("fade-out");
+
+  setTimeout(async () => {
+    try {
+      await fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "delete", id: Number(id) })
+      });
+      new Audio("recycle-bin.mp3").play();
+      itemDiv.remove();
+    } catch {
+      alert("Erreur lors de la suppression");
+    }
+  }, 400); // durée de la transition CSS
+}
+
+
+    // 📢 Lecture vocale de la liste
+    async function readListAloud() {
+      const res = await fetch(scriptURL);
+      const data = await res.json();
+      if (!data || data.length === 0) {
+        speak("La liste est vide !");
+        return;
+      }
+
+      let phrase = "Voici votre liste : ";
+      data.forEach(row => {
+        if (row.magasin1) phrase += `${row.magasin1} chez Carrefour, `;
+        if (row.magasin2) phrase += `${row.magasin2} chez Prodor, `;
+      });
+      speak(phrase);
+    }
+
+    // 🎤 Reconnaissance vocale
+    voiceBtn.addEventListener("click", () => {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("La reconnaissance vocale n'est pas supportée par ce navigateur. Utilise Chrome ou Edge.");
+        return;
+      }
+
+      result.textContent = "";
+      status.textContent = "🎧 J'écoute...";
+      const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const rec = new Rec();
+      rec.lang = "fr-FR";
+      
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.start();
+
+      rec.onresult = async (ev) => {
+        const phrase = ev.results[0][0].transcript;
+        status.textContent = "🗣️ " + phrase;
+
+          // Si la phrase contient des mots turcs, ajoute un flag pour l'IA
+  const turkishHints = ["ekle", "peynir", "süt", "migros", "prodor", "domates", "al", "ve"];
+  const isTurkish = turkishHints.some(word => phrase.toLowerCase().includes(word));
+        
+        try {
+          const resp = await fetch(scriptURL, {
+            method: "POST",
+            body: JSON.stringify({  action: "ai_add", transcript: phrase, lang: isTurkish ? "tr" : "fr" })
+          });
+          const json = await resp.json();
+         if (json.ok) {
+  let msg = json.message || "";
+  if (msg.includes("magasin1")) msg = "Ajouté chez Carrefour";
+  else if (msg.includes("magasin2")) msg = "Ajouté chez Prodor";
+  else msg = "Ajouté à la liste";
+
+  result.textContent = msg;
+  speak(msg);
+  loadList();
+}
+ 
+          
+          else {
+            result.textContent = "Erreur serveur : " + (json.error || JSON.stringify(json));
+            speak("Désolé, je n'ai pas pu ajouter.");
+          }
+        } catch (err) {
+          result.textContent = "Erreur réseau : " + err;
+          speak("Erreur réseau.");
+        }
+      };
+
+      rec.onerror = (e) => {
+        status.textContent = "❌ Erreur reconnaissance vocale";
+        console.error("rec error", e);
+      };
+
+      rec.onend = () => {
+        status.textContent = "Appuie à nouveau pour parler"; 
+      };
+    });
+
+    document.getElementById("readList").addEventListener("click", readListAloud);
+    loadList();
+    setInterval(loadList, 5000); // actualise toutes les 5 secondes
+
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
